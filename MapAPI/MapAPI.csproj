@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <PackageProjectUrl>https://github.com/JulianMa/MapAPI</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/JulianMa/MapAPI</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>Eco MapAPI</PackageTags>
+        <Authors>R3sist3nt</Authors>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <OutputType>Library</OutputType>
+        <RootNamespace>Eco.Plugins.MapAPI</RootNamespace>
+        <Version>0.1</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NLog.Web.AspNetCore" Version="4.13.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+    
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <Optimize>False</Optimize>
+        <NoWarn>1701;1702;1998</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <Optimize>False</Optimize>
+        <NoWarn>1701;1702</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- Use dependency dir references if available and locally built Eco dlls otherwise -->
+        <Reference Include="Eco.Core">
+            <HintPath>..\dependencies\Eco.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.Gameplay">
+            <HintPath>..\dependencies\Eco.Gameplay.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.ModKit">
+            <HintPath>..\dependencies\Eco.ModKit.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.Mods">
+            <HintPath>..\dependencies\Eco.Mods.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.Networking.ENet">
+            <HintPath>..\dependencies\Eco.Networking.ENet.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.Plugins">
+            <HintPath>..\dependencies\Eco.Plugins.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.Shared">
+            <HintPath>..\dependencies\Eco.Shared.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.Simulation">
+            <HintPath>..\dependencies\Eco.Simulation.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.Stats">
+            <HintPath>..\dependencies\Eco.Stats.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.WebServer">
+            <HintPath>..\dependencies\Eco.WebServer.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.World">
+            <HintPath>..\dependencies\Eco.World.dll</HintPath>
+        </Reference>
+        <Reference Include="Eco.WorldGenerator">
+            <HintPath>..\dependencies\Eco.WorldGenerator.dll</HintPath>
+        </Reference>
+        <Reference Include="EcoServer">
+            <HintPath>..\dependencies\EcoServer.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+</Project>

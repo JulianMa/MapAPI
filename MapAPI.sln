@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapAPI", "MapAPI\MapAPI.csproj", "{78495671-F4F3-441D-946A-F829C2C8A11E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F7B194ED-B60C-4101-91A5-58DBE15D95EC}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78495671-F4F3-441D-946A-F829C2C8A11E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78495671-F4F3-441D-946A-F829C2C8A11E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78495671-F4F3-441D-946A-F829C2C8A11E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78495671-F4F3-441D-946A-F829C2C8A11E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{177AF367-EA8A-4552-9686-CEC4D0E4452C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{177AF367-EA8A-4552-9686-CEC4D0E4452C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{177AF367-EA8A-4552-9686-CEC4D0E4452C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{177AF367-EA8A-4552-9686-CEC4D0E4452C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECAF333B-DFF8-4720-93A1-61669C96FEEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECAF333B-DFF8-4720-93A1-61669C96FEEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECAF333B-DFF8-4720-93A1-61669C96FEEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECAF333B-DFF8-4720-93A1-61669C96FEEE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {79C088B4-86C7-4D78-ABF9-C468B67AE48C}
+	EndGlobalSection
+EndGlobal
