@@ -55,7 +55,14 @@ namespace Eco.Plugins.MapAPI
             MapService mapService = new MapService();
             while (true)
             {
-                mapService.Tick().Wait();
+                try
+                {
+                    mapService.Tick().Wait();
+                }
+                catch
+                {
+                    // Noop
+                }
             }
         }
     }

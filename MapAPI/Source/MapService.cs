@@ -16,8 +16,9 @@ namespace Eco.Plugins.MapAPI
     public class MapService
     {
         private const string MapServerEndpoint = "https://maps.mightymoose.net";
-        private const string DevServerEndpoint = "http://localhost:8080";
-        private readonly HttpClient _mapRequester = new HttpClient();
+        private const string DevLocalEndpoint = "http://localhost:8080";
+        private const string DevServerEndpoint = "http://192.168.178.100:8080";
+        private readonly HttpClient _mapRequester = new();
 
         async private Task<MapQueueDTO?> GetNextMap()
         {
@@ -46,7 +47,7 @@ namespace Eco.Plugins.MapAPI
             if (mapQueueDto != null)
             {
                 Console.WriteLine($"Took Generation Task: Size {mapQueueDto.mapSize} with Seed {mapQueueDto.seed} and id '{mapQueueDto.id}'");
-                if (mapQueueDto.mapSize > 300)
+                if (mapQueueDto.mapSize > 3000)
                 {
                     return;
                 }
@@ -63,19 +64,23 @@ namespace Eco.Plugins.MapAPI
 
         private byte[] GenerateMapPreview(int mapSeed, int mapSize)
         {
-            int calcMapSize = mapSize * 10;
-
+            if (mapSize > 3000)
+            {
+                throw new Exception("Map size is too large.");
+            }
+            
             VoronoiWorldGenerator generator = new VoronoiWorldGenerator(false, true);
 
             VoronoiWorldGeneratorConfig config = WorldGeneratorPlugin.Settings.VoronoiWorldGeneratorConfig;
 
             config.Seed = mapSeed;
             config.Reset();
-            generator.WorldSize = calcMapSize;
+            generator.WorldSize = mapSize;
             generator.Generate(config);
 
             var bytes = generator.TerrainPngStream.ToArray();
             generator.TerrainPngStream.Close();
+            GC.Collect();
             return bytes;
         }
     }
