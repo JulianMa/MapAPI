@@ -68,6 +68,10 @@
         </Reference>
         <Reference Include="EcoServer">
             <HintPath>..\dependencies\EcoServer.dll</HintPath>
-        </Reference>
+        </Reference>    
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="xcopy /Y &quot;$(OutDir)MapAPI.dll&quot; &quot;..\..\MapGenWin-11.0.6\Mods\MapAPI.dll*&quot;" />
+    </Target>
 </Project>

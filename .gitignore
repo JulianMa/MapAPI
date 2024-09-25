@@ -1,5 +1,7 @@
 ﻿*.dll
 /packages
 /.vs
-/DiscordLink/bin
-/DiscordLink/obj
+/MapAPI/bin
+/MapAPI/obj
+/dependencies
+.idea
