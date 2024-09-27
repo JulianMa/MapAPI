@@ -47,11 +47,12 @@ namespace Eco.Plugins.MapAPI
             if (mapQueueDto != null)
             {
                 Console.WriteLine($"Took Generation Task: Size {mapQueueDto.mapSize} with Seed {mapQueueDto.seed} and id '{mapQueueDto.id}'");
-                if (mapQueueDto.mapSize > 3000)
+                var mapSize = mapQueueDto.mapSize * 10;
+                if (mapSize > 2000)
                 {
                     return;
                 }
-                byte[] generatedPreviewImage = GenerateMapPreview(mapQueueDto.seed, mapQueueDto.mapSize);
+                byte[] generatedPreviewImage = GenerateMapPreview(mapQueueDto.seed, mapSize);
                 await PostGeneratedMap(generatedPreviewImage, mapQueueDto.id);
             }
             else
@@ -72,7 +73,6 @@ namespace Eco.Plugins.MapAPI
             VoronoiWorldGenerator generator = new VoronoiWorldGenerator(false, true);
 
             VoronoiWorldGeneratorConfig config = WorldGeneratorPlugin.Settings.VoronoiWorldGeneratorConfig;
-
             config.Seed = mapSeed;
             config.Reset();
             generator.WorldSize = mapSize;
