@@ -8,6 +8,7 @@ using NLog;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -18,6 +19,8 @@ namespace Eco.Plugins.MapAPI
         private const string MapServerEndpoint = "https://maps.mightymoose.net";
         private const string DevLocalEndpoint = "http://localhost:8080";
         private const string DevServerEndpoint = "http://192.168.178.100:8080";
+
+        private const string ENDPOINT = MapServerEndpoint;
         private readonly HttpClient _mapRequester = new();
 
         async private Task<MapQueueDTO?> GetNextMap()
@@ -25,7 +28,7 @@ namespace Eco.Plugins.MapAPI
 
             try
             {
-                HttpResponseMessage response = await _mapRequester.GetAsync(MapServerEndpoint + "/api/maps/queue/preview/next");
+                HttpResponseMessage response = await _mapRequester.GetAsync(ENDPOINT + "/api/maps/queue/preview/next");
                 return response.StatusCode != HttpStatusCode.OK ? null : SerializationUtils.DeserializeJson<MapQueueDTO>(await response.Content.ReadAsStringAsync());
             }
             catch (HttpRequestException e)
@@ -35,10 +38,16 @@ namespace Eco.Plugins.MapAPI
             return null;
         }
 
-        async private Task PostGeneratedMap(byte[] preview, string id)
+        async private Task<HttpResponseMessage> PostGeneratedMap(byte[] preview, string id)
         {
             HttpContent binaryContent = new ByteArrayContent(preview);
-            await _mapRequester.PutAsync(MapServerEndpoint + "/api/maps/preview/" + id, binaryContent);
+            return await _mapRequester.PutAsync(ENDPOINT + "/api/maps/preview/" + id, binaryContent);
+        }
+
+        async private Task<HttpResponseMessage> PostMapMetadata(WorldResultVars worldResultVars, string id)
+        {
+            JsonContent jsonContent = JsonContent.Create(worldResultVars);
+            return await _mapRequester.PutAsync(ENDPOINT + "/api/maps/metadata/" + id, jsonContent);
         }
 
         public async Task Tick()
@@ -52,8 +61,16 @@ namespace Eco.Plugins.MapAPI
                 {
                     return;
                 }
-                byte[] generatedPreviewImage = GenerateMapPreview(mapQueueDto.seed, mapSize);
-                await PostGeneratedMap(generatedPreviewImage, mapQueueDto.id);
+
+                byte[] generatedPreviewImage = GenerateMapPreview(mapQueueDto.seed, mapSize, out WorldResultVars worldResultVars);
+                var response = await PostGeneratedMap(generatedPreviewImage, mapQueueDto.id);
+                
+                var resultObject = response.StatusCode != HttpStatusCode.OK ? null : SerializationUtils.DeserializeJson<MapEntity>(await response.Content.ReadAsStringAsync());
+                if (resultObject != null)
+                {
+                    await PostMapMetadata(worldResultVars, resultObject.id);
+                }
+
             }
             else
             {
@@ -63,13 +80,13 @@ namespace Eco.Plugins.MapAPI
 
         }
 
-        private byte[] GenerateMapPreview(int mapSeed, int mapSize)
+        private byte[] GenerateMapPreview(int mapSeed, int mapSize, out WorldResultVars worldResultVars)
         {
             if (mapSize > 3000)
             {
                 throw new Exception("Map size is too large.");
             }
-            
+
             VoronoiWorldGenerator generator = new VoronoiWorldGenerator(false, true);
 
             VoronoiWorldGeneratorConfig config = WorldGeneratorPlugin.Settings.VoronoiWorldGeneratorConfig;
@@ -80,7 +97,7 @@ namespace Eco.Plugins.MapAPI
 
             var bytes = generator.TerrainPngStream.ToArray();
             generator.TerrainPngStream.Close();
-            GC.Collect();
+            worldResultVars = generator.WorldResultVars;
             return bytes;
         }
     }
