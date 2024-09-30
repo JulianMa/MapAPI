@@ -29,6 +29,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="SharpZipLib" Version="1.4.2" />
+        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
         <!-- Use dependency dir references if available and locally built Eco dlls otherwise -->
         <Reference Include="Eco.Core">
             <HintPath>..\dependencies\Eco.Core.dll</HintPath>
@@ -73,5 +75,6 @@
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="xcopy /Y &quot;$(OutDir)MapAPI.dll&quot; &quot;..\..\MapGenWin-11.0.6\Mods\MapAPI.dll*&quot;" />
+        <Exec Command="xcopy /Y &quot;$(OutDir)ICSharpCode.SharpZipLib.dll&quot; &quot;..\..\MapGenWin-11.0.6\Mods\ICSharpCode.SharpZipLib.dll*&quot;" />
     </Target>
 </Project>

@@ -14,27 +14,33 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using NLog;
 
 namespace Eco.Plugins.MapAPI
 {
-    [Priority(PriorityAttribute.High)] // Need to start before WorldGenerator in order to listen for world generation finished event
+    [Priority(PriorityAttribute
+        .High)] // Need to start before WorldGenerator in order to listen for world generation finished event
     public class MapAPI : IModKitPlugin, IInitializablePlugin, IShutdownablePlugin
     {
         private Thread loopThread = null;
+
         public string GetStatus()
         {
             return "OK";
         }
+
         public string GetCategory()
         {
             return "API";
         }
+
         public Task ShutdownAsync()
         {
             if (loopThread != null && loopThread.IsAlive)
             {
                 loopThread.Interrupt();
             }
+
             return Task.CompletedTask;
         }
 
@@ -51,18 +57,10 @@ namespace Eco.Plugins.MapAPI
 
         static void RequestLoop()
         {
-
             MapService mapService = new MapService();
             while (true)
             {
-                try
-                {
-                    mapService.Tick().Wait();
-                }
-                catch
-                {
-                    // Noop
-                }
+                mapService.Tick().Wait();
             }
         }
     }
